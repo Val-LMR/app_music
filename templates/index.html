@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Record Company</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f2f2f2; margin: 0; }
+        header { background: #333; color: #fff; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        header a { color: #fff; text-decoration: none; }
+        main { max-width: 700px; margin: 30px auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        form { display: flex; gap: 10px; }
+        input { flex: 1; padding: 8px; }
+        button { padding: 8px 16px; background: #333; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 8px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background: #eee; }
+    </style>
+</head>
+<body>
+    <header>
+        <span>Bienvenue {{ session['user'] }}</span>
+        <a href="{{ url_for('logout') }}">Déconnexion</a>
+    </header>
+
+    <main>
+        <h1>Recherche</h1>
+        <form method="GET" action="{{ url_for('recherche') }}">
+            <input type="text" name="q" value="{{ q or '' }}" placeholder="Album, groupe ou chanson...">
+            <button type="submit">Rechercher</button>
+        </form>
+
+        {% if q %}
+            {% if resultats %}
+                <table>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Type</th>
+                    </tr>
+                    {% for r in resultats %}
+                    <tr>
+                        <td>{{ r.name }}</td>
+                        <td>{{ r.type }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>Aucun résultat pour « {{ q }} ».</p>
+            {% endif %}
+        {% endif %}
+    </main>
+</body>
+</html>
